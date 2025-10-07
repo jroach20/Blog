@@ -1,0 +1,54 @@
+h1 {
+    text-align: center;
+}
+
+#pageBody
+{
+    top: 0;
+    position: relative;
+    max-width: 700px;
+    margin: 0 auto;
+    background: #171958;
+    z-index: 1;
+    padding-top: 100px; /* pushes content below the background block */
+    min-height: 1000px; /* adjust as needed */
+    box-sizing: border-box;
+    text-align: auto;
+    border: 10px black;
+
+}
+
+#banner
+{
+    top: 0;
+    left: 20px;
+    position: absolute;
+    width: 400px;
+    height: 100px;
+}
+
+#corner
+{
+    top: 0;
+    right: 0;
+    position: absolute;
+    width: 300px;
+    height: 200px;
+}
+#badge
+{
+    top: 0;
+    left: 50px;
+    position: fixed;
+    width: 20%;
+    height: 35%;
+}
+
+#writePostPrompt
+{
+    bottom: 0;
+    right: 280px;
+    position: fixed;
+    width: 75px;
+    height: 75px;
+}
