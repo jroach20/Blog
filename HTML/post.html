@@ -9,38 +9,40 @@ form * {
 </style>
 
 <body>
-  <form id="postForm" method="post">
-    <textarea name="text" rows="3" cols="50"></textarea>
-    <input type="submit" value="Post">
-  </form>
 
-  <form id="imgForm" action="/upload-endpoint" enctype="multipart/form-data" method="post">
-    <label for="img_upload">Upload image:</label>
-    <input type="file" name="img_upload" accept=".jpg, .jpeg, .png" />
+  <form id="postForm" method="post" enctype="multipart/form-data">
+    <div class="form-group">
+      <textarea class="form-control-text" 
+                id="text" 
+                name="text" 
+                rows="8" cols="50"> </textarea>
+      <input type="file" 
+            class="form-control-file" 
+            id="img" 
+            label="Upload image:" 
+            name="img_upload" 
+            accept=".jpg, .jpeg, .png" />
+      <input type="submit" value="Post">
+    </div>
   </form>
 
 </body>
 
-<script>
-
-  //image upload listener
-  document.querySelector("input[name='img_upload']").addEventListener("change", (e) => {
-    const file = e.target.files[0];
-    console.log("File selected:");
-    console.log(file);
-  });
-  
-  //text upload listener
-  document.getElementById("postForm").addEventListener("submit",async (e) => {
+<script>  
+  const form = document.getElementById("postForm");
+  //upload listener
+  form.addEventListener("submit",async (e) => {
     e.preventDefault();
-    const text = e.target.text.value;
 
+    const formData = new FormData(form);
+  
     try{
       const response = await fetch("http://127.0.0.1:3000/", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ text })
+        //headers: { "Content-Type": "application/json" },
+        body: formData
       });
+      console.log("post request attempted...");
 
 
       if (!response.ok) {

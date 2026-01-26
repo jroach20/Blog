@@ -1,92 +1,66 @@
-import { createServer } from 'http';
-import express, { json } from 'express';
-import pg from 'pg';
+import express, { json, text } from 'express';
 import multer from 'multer';
+import fs from 'fs';
 
-const multer  = multer();
+// FIND OUT HOW TO CHANGE THE OWNERSHIP OF THE POSTIMG FILE SO THAT POSTGRES WILL UPLOAD IT
 const app = express();
-app.use(json());
+const port = '3000';
 
-const date = new Date();
-let dd = date.getDay();
-let mm = date.getMonth();
-let yy = date.getFullYear().toString().substring(2);
-
-
-function postToDB(text,image='null',date=`${dd}-${mm}-${yy}`){
-
-const client = new pg.Client({
-    host: "localhost",
-    port: 5432,
-    user: "hroach",
-    password: "password",
-    database: "postgres"
+const storage = multer.diskStorage({
+  destination: "./images",
+  filename: (req, file, cb) => {
+    cb(null ,'postImg.png');
+  },
 });
 
-client.connect((err) =>{
-    if(err) throw err;
-    const q = `INSERT INTO blog.posts (body_text, image, date_posted) VALUES ('${text}', pg_read_binary_file(${image}), '${date}');`
-    console.log(q);
-    client.query(q, (error, results) => {
-        if(error) throw error;
+const upload = multer({
+                        storage: storage,
+                        limits: {
+                          fileSize: 5 * 1024 * 1024 // 5 MB
+                          }
+                        } ,function() {
+                          fs.chown("./image/postImg.png",)
+                        });
 
-        console.log(results.rows)
 
-    })
-})
-}
-
-const port = 3000;
-
-createServer((req, res) => {
-  const headers = {
-    'Access-Control-Allow-Origin': '*', /* @dev First, read about security */
-    'Access-Control-Allow-Methods': 'OPTIONS, POST, GET',
-    'Access-Control-Max-Age': 2592000, // 30 days
-    'Access-Control-Allow-Headers': 'Content-Type',
-    'Content-Type': 'application/json'
+// CORS middleware
+const allowCrossDomain = (req, res, next) => {
     /** add other headers as per requirement */
-  };
+  res.header(      'Access-Control-Allow-Origin', '*');
+  res.header(`Access-Control-Allow-Methods`, `GET,PUT,POST,DELETE`);
+  res.header(`Access-Control-Allow-Headers`, `Content-Type`);
+  res.header('Content-Type', 'application/json');
+  next();
+};
 
-  // Handle preflight
-  if (req.method === 'OPTIONS') {
-    res.writeHead(204, headers);
-    res.end();
-    return;
-  }
+app.use(allowCrossDomain);
+app.use(json( { limit: "5mb" } ));
+app.use(express.urlencoded({ limit: "5mb", extended: true }));
 
-  //POST
-  if (req.method === 'POST') {
-    let body = '';
-    req.on('data', chunk => (body += chunk));
-    req.on('end', () => {
+
+app.get('/', (req, res) => {
+  res.send('get a clue, world')
+  console.log('get request recieved');
+})
+
+app.post('/', upload.single('img_upload'), function (req, res){
       try {
-        const data = JSON.parse(body || '{}');
-        const text = (data.text || '').trim();
+        const text = req.body.text;
+        const img = req.file;
 
         if (!text) {
           res.writeHead(400, headers);
           res.end(JSON.stringify({ error: 'Text field is required' }));
-          return;
         }
-        
-        //console.log("Received post: " + text);
-        postToDB(text);
-        return;
       }
-
-       catch (err) {
-        console.error('❌ Invalid JSON:', err);
+      
+      catch (err) {
+        console.error('Invalid JSON:', err);
         res.writeHead(400, headers);
         res.end(JSON.stringify({ error: 'Invalid JSON' }));
       }
-    });
-    return;
-  }
+});
 
-  //GET
-  res.writeHead(200, headers);
-  res.end(JSON.stringify({ message: 'Send a POST with JSON {"text":"..."}' }));
-}).listen(port);
-
-console.log(`Yippeeee!!! Backend running at http://127.0.0.1:${port}`);
+app.listen(port, function (){
+  console.log("Server is running!!!!")
+});

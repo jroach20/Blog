@@ -1,16 +1,15 @@
-import express, { json } from 'express';
-const app = express();
-app.use(json());
-import { Client } from "pg";
+import pg from 'pg';
 
 const date = new Date();
-let dd = date.getDay();
-let mm = date.getMonth();
-let yy = date.getFullYear().toString().substring(2);
+let dd = date.getDate();
+let mm = date.getMonth() + 1;
+let yy = date.getFullYear().toString().slice(-2);
 
-function postToDB(text,image=null,date=`${dd}-${mm}-${yy}`){
+let formattedDate = `${dd}-${mm}-${yy}`;
 
-const client = new Client({
+function postToDB(text,image='null',date=formattedDate){
+
+const client = new pg.Client({
     host: "localhost",
     port: 5432,
     user: "hroach",
@@ -20,8 +19,9 @@ const client = new Client({
 
 client.connect((err) =>{
     if(err) throw err;
-
-    client.query(`INSERT INTO blog.posts (body_text, image, date_posted) VALUES (${text}, pg_read_binary_file(${image}), ${date});`, (error, results) => {
+    const q = `INSERT INTO blog.posts (body_text, image, date_posted) VALUES ('${text}', pg_read_binary_file(${image}), '${date}');`
+    console.log(q);
+    client.query(q, (error, results) => {
         if(error) throw error;
 
         console.log(results.rows)
