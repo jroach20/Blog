@@ -42,7 +42,7 @@ app.get('/', (req, res) => {
 app.post('/', upload.single('img_upload'), function (req, res){
       try {
         const text = req.body.text;
-        const img = req.file.buffer;
+        const img = req.file?.buffer ?? null;        
         postToDB(text,img);
 
         if (!text) {
