@@ -7,25 +7,29 @@ let yy = date.getFullYear().toString().slice(-2);
 
 let formattedDate = `${dd}-${mm}-${yy}`;
 
-function postToDB(text,image='null',date=formattedDate){
+const pool = new pg.Pool(
+    {    
+        host: "localhost",
+        port: 5432,
+        user: "hroach",
+        password: "password",
+        database: "postgres"
+    }
+);
 
-const client = new pg.Client({
-    host: "localhost",
-    port: 5432,
-    user: "hroach",
-    password: "password",
-    database: "postgres"
-});
 
-client.connect((err) =>{
-    if(err) throw err;
-    const q = `INSERT INTO blog.posts (body_text, image, date_posted) VALUES ('${text}', pg_read_binary_file(${image}), '${date}');`
-    console.log(q);
-    client.query(q, (error, results) => {
-        if(error) throw error;
+async function postToDB(text,img='null',date=formattedDate){
 
-        console.log(results.rows)
-
-    })
-})
+const client = await pool.connect();
+await client.query(
+    `INSERT INTO blog.posts (body_text, image, date_posted)
+    VALUES ($1, $2, $3)`,
+  [
+    text,
+    img,
+    date
+  ]
+);
 }
+
+export { postToDB };

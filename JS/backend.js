@@ -1,16 +1,14 @@
 import express, { json, text } from 'express';
 import multer from 'multer';
-import fs from 'fs';
+import { postToDB } from './postToDB.js';
 
 // FIND OUT HOW TO CHANGE THE OWNERSHIP OF THE POSTIMG FILE SO THAT POSTGRES WILL UPLOAD IT
 const app = express();
 const port = '3000';
 
-const storage = multer.diskStorage({
-  destination: "./images",
-  filename: (req, file, cb) => {
-    cb(null ,'postImg.png');
-  },
+const storage = multer.memoryStorage({
+  mimetype: 'image/png',
+  size: 411336
 });
 
 const upload = multer({
@@ -18,8 +16,6 @@ const upload = multer({
                         limits: {
                           fileSize: 5 * 1024 * 1024 // 5 MB
                           }
-                        } ,function() {
-                          fs.chown("./image/postImg.png",)
                         });
 
 
@@ -46,7 +42,8 @@ app.get('/', (req, res) => {
 app.post('/', upload.single('img_upload'), function (req, res){
       try {
         const text = req.body.text;
-        const img = req.file;
+        const img = req.file.buffer;
+        postToDB(text,img);
 
         if (!text) {
           res.writeHead(400, headers);
