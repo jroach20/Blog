@@ -2,6 +2,11 @@ h1 {
     text-align: center;
 }
 
+@font-face {
+  font-family: Christie; /* set name */
+  src: url("./Font/Christie.ttf"); /* url of the font */
+}
+
 #pageBody
 {
     top: 0;
@@ -13,14 +18,25 @@ h1 {
     padding-top: 100px; /* pushes content below the background block */
     min-height: 1000px; /* adjust as needed */
     box-sizing: border-box;
-    text-align: auto;
     border: 10px black;
+    text-align: left;
 
+
+}
+
+#header
+{
+    padding: 40px;
+}
+
+#footer
+{
+    padding: 20px;
 }
 
 #banner
 {
-    top: 0;
+    top: 15px;
     left: 20px;
     position: absolute;
     width: 400px;
@@ -37,11 +53,11 @@ h1 {
 }
 #badge
 {
-    top: 0;
-    left: 50px;
+    top: 10px;
+    left: 0;
     position: fixed;
-    width: 20%;
-    height: 35%;
+    width: 22.5%;
+    height: 40%;
 }
 
 #writePostPrompt
@@ -51,4 +67,34 @@ h1 {
     position: fixed;
     width: 75px;
     height: 75px;
+}
+
+#post-container p {
+    background-color: #d6d6d6;
+    border: 5px solid #9a9f9e;
+    width: 90%;
+    margin: 20px auto;   /* THIS centers it */
+    padding: 15px;
+    box-sizing: border-box;
+    font-family: Christie;
+    font-size: 20px;
+}
+
+#post-container img {
+    max-width: 400px;
+    max-height: 300px;
+    display: block;
+    margin: 20px auto;
+    border: 5px solid #d6d6d6;
+}
+
+#post-container time {
+    color: #825aa5;
+    text-decoration: underline;
+    width: 90%;
+    margin: 20px auto;
+    padding: 35px;
+    font-family: Christie;
+    font-size: 16px;
+
 }

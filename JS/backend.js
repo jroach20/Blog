@@ -1,8 +1,8 @@
 import express, { json, text } from 'express';
 import multer from 'multer';
-import { postToDB } from './postToDB.js';
+import { postToDB, getFromDB } from './pgClient.js';
+import { Buffer } from 'node:buffer';
 
-// FIND OUT HOW TO CHANGE THE OWNERSHIP OF THE POSTIMG FILE SO THAT POSTGRES WILL UPLOAD IT
 const app = express();
 const port = '3000';
 
@@ -34,10 +34,27 @@ app.use(json( { limit: "5mb" } ));
 app.use(express.urlencoded({ limit: "5mb", extended: true }));
 
 
-app.get('/', (req, res) => {
-  res.send('get a clue, world')
-  console.log('get request recieved');
-})
+app.get('/', async (req, res) => {
+  try{
+    const posts = await getFromDB();
+    posts.forEach(row => {
+  
+    if (row[1]) {
+      row[1] = Buffer.from(row[1]).toString("base64");
+      }
+      
+    });
+
+    res.json(posts)
+  }
+  
+  catch (err) {
+    console.error('Invalid JSON:', err);
+    res.writeHead(400, headers);
+    res.end(JSON.stringify({ error: 'Invalid JSON' }));
+  }
+
+});
 
 app.post('/', upload.single('img_upload'), function (req, res){
       try {

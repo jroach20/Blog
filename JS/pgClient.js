@@ -32,4 +32,14 @@ await client.query(
 );
 }
 
-export { postToDB };
+async function getFromDB(){
+  const client = await pool.connect();
+  const result = await client.query({
+  rowMode: 'array',
+  text: `select * from blog.posts
+         order by blog.posts.date_posted desc;`
+  })
+  return result.rows;
+};
+
+export { postToDB, getFromDB };

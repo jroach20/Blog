@@ -10,11 +10,22 @@
 <body background="../CSS/ArtAssets/tiles.png">
     <div id="backgroundBlock">
     <div id="pageBody">
+      <div id="header">
         <img id="banner" src="../CSS/ArtAssets/Bannergif.gif"/>
         <img id="corner" src="../CSS/ArtAssets/corner.png"/>
-        <img id="badge" src="../CSS/ArtAssets/Badge.png"/>
-        <!-- Button trigger modal -->
-        <input id="writePostPrompt" type="image" src="../CSS/ArtAssets/plus.png" data-toggle="modal" data-target="#myModal"/>
+      </div>
+
+      <img id="badge" src="../CSS/ArtAssets/Badge.png"/>
+      <!-- Button trigger modal -->
+      <input  id="writePostPrompt" 
+              type="image" 
+              src="../CSS/ArtAssets/plus.png" />
+        
+      <div id="post-container">
+
+      </div>
+
+      <div id="footer"></div>
           
     </div>
             <!-- Modal -->
@@ -44,5 +55,67 @@
         <!-- Modal -->
 
     </div>
+  
+  <script>
+
+// MODAL
+    $(document).ready(function(){
+      $("#writePostPrompt").on("click", function(){
+
+        $(".modal-body").load("post.html", function (){
+          $("#myModal").modal("show");
+        });
+        });
+      });
+
+// API CALLS
+              window.addEventListener("DOMContentLoaded", async (e) => {
+            e.preventDefault();
+            try{
+                const response = await fetch("http://127.0.0.1:3000/");
+                
+                if (!response.ok) {
+                    throw new Error(`Response status: ${response.status}`);
+                    }
+            
+            const data = await response.json();
+
+            console.log(data);
+
+            const usrPost = document.getElementById("post-container");
+
+            data.forEach(row => {
+                const timeTag = document.createElement("time");
+                const imgTag = document.createElement("img");
+                const pTag = document.createElement("p");
+
+                const readableDate = new Date(row[2]);
+                const day = readableDate.getDate();
+                const month = readableDate.getMonth() + 1;
+                const year = readableDate.getFullYear();
+                
+                timeTag.textContent = `${day}/${month}/${year}`;
+                
+                usrPost.appendChild(timeTag);
+
+                if (row[1]){
+                    imgTag.src = "data:image/png;base64, "+row[1];
+                    usrPost.appendChild(imgTag);
+                }
+
+                pTag.textContent = row[0];
+                usrPost.appendChild(pTag);
+
+            });
+            }
+            
+
+            catch (error) {
+                console.error(error.message);
+            }
+
+        });
+
+  </script>
 </body>
 </html>
