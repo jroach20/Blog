@@ -37,10 +37,29 @@ async function getFromDB(){
   const client = await pool.connect();
   const result = await client.query({
   rowMode: 'array',
-  text: `select * from blog.posts
-         order by blog.posts.date_posted desc;`
+  text: `SELECT * FROM blog.posts
+         ORDER BY blog.posts.date_posted DESC;`
   })
   return result.rows;
 };
 
-export { postToDB, getFromDB };
+async function initDB() {
+    const client = await pool.connect();
+    try {
+        await client.query(`CREATE SCHEMA IF NOT EXISTS blog`);
+
+        await client.query(
+            `CREATE TABLE IF NOT EXISTS blog.posts (
+                id SERIAL PRIMARY KEY,
+                body_text TEXT NOT NULL,
+                image BYTEA,
+                date_posted DATE
+            )`
+        );
+      }
+      finally {
+        client.release();
+    }
+  }
+
+export { postToDB, getFromDB, initDB };
