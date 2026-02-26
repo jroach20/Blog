@@ -98,3 +98,20 @@ h1 {
     font-size: 16px;
 
 }
+
+#myModal{
+background-color: rgba(187, 255, 224);
+}
+
+.modal-dialog {
+    max-width: 700px;
+    border: 5px solid rgba(147, 228, 249);
+    margin-top: 0;
+
+}
+
+.modal-content {
+    height: 500px;
+    padding-top: 0;
+
+}

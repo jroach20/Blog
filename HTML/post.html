@@ -1,26 +1,38 @@
 <!DOCTYPE html>
 
-<style>
-form * {
-  display: block;
-  margin: 10px;
-}
-</style>
-
+<link rel="stylesheet" href="../CSS/postStyle.css">
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 
   <form id="postForm" method="post" enctype="multipart/form-data">
-    <div class="form-group">
-      <textarea class="form-control-text" 
-                id="text" 
-                name="text" 
-                rows="8" cols="50"> </textarea>
+    
+    <div class="PostHeader">
+      <img id="header" src="../CSS/ArtAssets/Post/banner (post).png"/>
       <input type="file" 
             class="form-control-file" 
             id="img" 
             label="Upload image:" 
             name="img_upload" 
-            accept=".jpg, .jpeg, .png" />
-      <input type="submit" value="Post">
+            accept=".jpg, .jpeg, .png" 
+            style="display:none;"/>
+            <label for="img">
+              <img id="fileIcon" src="../CSS/ArtAssets/Post/add file.png"/>
+            </label>
+
+          <input id="close-modal" 
+                 data-dismiss="modal" 
+                 aria-label="Close" 
+                 type="image"
+                 src="../CSS/ArtAssets/Post/close.png"/>
+
+    </div>
+    
+    <div class="form-group">
+      <textarea class="form-control-text" 
+                id="text" 
+                name="text" 
+                rows="10" cols="83"> </textarea>
+      
+      <input type="submit" value="SUBMIT" id="submitPost">
     </div>
   </form>
 

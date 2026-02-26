@@ -1,0 +1,75 @@
+@font-face {
+  font-family: Christie; /* set name */
+  src: url("./Font/Christie.ttf"); /* url of the font */
+}
+
+form {
+    margin: 0;
+}
+
+.PostHeader {
+    margin: 0;
+    padding: 0;
+}
+
+.form-group {
+    margin-top: 0;
+    margin: 0;
+
+}
+
+#header {
+width: 50%;
+height: 50%;
+
+}
+
+#text{
+margin-left: 25px;
+margin-bottom: 30px;
+margin-top: 0;
+background-color: rgba(222, 222, 222);
+border: 5px solid rgba(169, 169, 169);
+color: rgba(79, 79, 79);
+font-family: Christie;
+font-size: 18px;
+}
+
+#fileIcon{
+height: 50px;
+width: 50px;
+}
+
+#close-modal{
+height: 50px;
+width: 50px;
+margin-left: 200px;
+top: 20px;
+position: relative;
+}
+
+#submitPost{
+border: 3px solid rgba(137, 137, 137);
+background-color: rgba(252, 252, 252);
+font-family: Christie;
+font-size: 15px;
+position: relative;
+bottom: 35px;
+left: 583px;
+}
+
+.modal-dialog {
+    width: 700px;
+}
+
+.modal-content {
+    height: 450px;
+    box-shadow: none !important;
+
+}
+
+
+.modal-body{
+    box-sizing: border-box;
+    padding: 0;
+}

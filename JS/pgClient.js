@@ -1,4 +1,5 @@
 import pg from 'pg';
+import creds from "../JSON/PGcreds.json" with { type:"json"};
 
 const date = new Date();
 let dd = date.getDate();
@@ -9,11 +10,11 @@ let formattedDate = `${dd}-${mm}-${yy}`;
 
 const pool = new pg.Pool(
     {    
-        host: "localhost",
-        port: 5432,
-        user: "hroach",
-        password: "password",
-        database: "postgres"
+        host: creds.host,
+        port: creds.port,
+        user: creds.user,
+        password: creds.password,
+        database: creds.database
     }
 );
 
