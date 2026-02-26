@@ -1,6 +1,6 @@
 import express, { json, text } from 'express';
 import multer from 'multer';
-import { postToDB, getFromDB } from './pgClient.js';
+import { postToDB, getFromDB, initDB } from './pgClient.js';
 import { Buffer } from 'node:buffer';
 
 const app = express();
@@ -78,3 +78,5 @@ app.post('/', upload.single('img_upload'), function (req, res){
 app.listen(port, function (){
   console.log("Server is running!!!!")
 });
+
+initDB();
