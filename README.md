@@ -15,5 +15,7 @@ pg@8.17.2
 
 ## To run (in this order):
 [1] change the values in JSON/PGcreds.js to match your posgres credentials
+
 [2] node backend.js
+
 [3] open main.html
