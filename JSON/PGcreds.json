@@ -1,7 +1,7 @@
 {
-    "host": "localhost",
-    "port": 5432,
-    "user": "hroach",
-    "password": "password",
-    "database": "postgres"
+    "host": "your-host",
+    "port": your-post,
+    "user": "your-name",
+    "password": "your-password",
+    "database": "your-database"
 }
